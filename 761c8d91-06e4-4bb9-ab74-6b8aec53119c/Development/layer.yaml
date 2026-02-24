@@ -1,0 +1,69 @@
+id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
+name: Development
+type: 1
+canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
+blocks:
+- auto_size: false
+  canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
+  compute_settings: null
+  description: 'Comprehensive ML analysis of Zerve user retention: cleans 409K events,
+    engineers 40+ behavioral features, scores users on retention/depth/volume, segments
+    via K-Means, predicts success using Random Forest/GB/Logistic Regression with
+    SHAP explainability, visualizes funnel and insights.'
+  height: 1000
+  id: 2bb3b5d1-dff5-4f56-8a31-fe4d6d68dd38
+  layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
+  name: data_science_retention_analysis
+  parent_id: null
+  properties: {}
+  status: 4
+  type: 1
+  variables: null
+  width: 1600
+  x: 0
+  y: 1000
+- auto_size: false
+  canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
+  compute_settings: null
+  description: Displays the distribution of event types in the user retention dataset
+  height: 1000
+  id: c416eff4-fe99-40b6-9d17-58e33b79f400
+  layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
+  name: event_value_counts
+  parent_id: null
+  properties: {}
+  status: 3
+  type: 1
+  variables: null
+  width: 1600
+  x: 0
+  y: 500
+- auto_size: false
+  canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
+  compute_settings:
+    compute_environment_type: 1
+  description: Loads user retention event data (409k rows, 107 columns) from parquet
+    and displays schema overview
+  height: 1000
+  id: e7c6b02b-8c17-43a0-a594-bc6edcdcccf9
+  layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
+  name: Example Dataset
+  parent_id: null
+  properties: {}
+  status: 1
+  type: 1
+  variables: null
+  width: 1600
+  x: 0
+  y: 0
+edges:
+- canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
+  id: 555f5ab5-bcd4-4236-89a1-b6b94e756644
+  layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
+  source: c416eff4-fe99-40b6-9d17-58e33b79f400
+  target: 2bb3b5d1-dff5-4f56-8a31-fe4d6d68dd38
+- canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
+  id: b18de6c5-09a9-4470-892f-8853a91c8740
+  layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
+  source: e7c6b02b-8c17-43a0-a594-bc6edcdcccf9
+  target: c416eff4-fe99-40b6-9d17-58e33b79f400
