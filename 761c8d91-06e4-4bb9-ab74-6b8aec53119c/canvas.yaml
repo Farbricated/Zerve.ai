@@ -14,10 +14,11 @@ layers:
   - auto_size: false
     canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
     compute_settings: null
-    description: 'Comprehensive ML analysis of Zerve user retention: cleans 409K events,
-      engineers 40+ behavioral features, scores users on retention/depth/volume, segments
-      via K-Means, predicts success using Random Forest/GB/Logistic Regression with
-      SHAP explainability, visualizes funnel and insights.'
+    description: 'Comprehensive ML retention analysis: cleans 409K user events, engineers
+      40+ behavioral features (agent usage, app publishing, engagement depth), creates
+      composite success score, segments users via K-Means, trains 3 ML classifiers
+      to predict success, generates 12+ interactive visualizations including funnel
+      analysis and feature importance charts'
     height: 1000
     id: 2bb3b5d1-dff5-4f56-8a31-fe4d6d68dd38
     layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1

@@ -352,14 +352,31 @@ fig = px.scatter(
     color_continuous_scale='RdYlGn')
 fig.show()
 
-# 8.4 App publish vs success
-pub_summary = user_df.groupby(['ever_published_app','is_successful']).size().reset_index(name='count')
-pub_summary['ever_published_app'] = pub_summary['ever_published_app'].map({0:'Never Published',1:'Published App'})
-pub_summary['is_successful']      = pub_summary['is_successful'].map({0:'Unsuccessful',1:'Successful'})
-fig = px.bar(pub_summary, x='ever_published_app', y='count', color='is_successful',
-    barmode='group',
-    title='🚀 App Publishing = Success? The Numbers Say Yes',
-    color_discrete_map={'Unsuccessful':'#EF553B','Successful':'#00CC96'})
+# 8.4 App publish vs success (fixed - no color_discrete_map)
+pub0 = user_df[user_df['ever_published_app'] == 0]['is_successful'].value_counts()
+pub1 = user_df[user_df['ever_published_app'] == 1]['is_successful'].value_counts()
+
+pub_df = pd.DataFrame({
+    'Group'  : ['Never Published','Never Published','Published App','Published App'],
+    'Outcome': ['Unsuccessful','Successful','Unsuccessful','Successful'],
+    'Count'  : [
+        int(pub0.get(0, 0)), int(pub0.get(1, 0)),
+        int(pub1.get(0, 0)), int(pub1.get(1, 0))
+    ]
+})
+
+fig = go.Figure(data=[
+    go.Bar(name='Unsuccessful',
+           x=['Never Published','Published App'],
+           y=[int(pub0.get(0,0)), int(pub1.get(0,0))],
+           marker_color='#EF553B'),
+    go.Bar(name='Successful',
+           x=['Never Published','Published App'],
+           y=[int(pub0.get(1,0)), int(pub1.get(1,0))],
+           marker_color='#00CC96')
+])
+fig.update_layout(barmode='group',
+    title='🚀 App Publishing = Success? The Numbers Say Yes')
 fig.show()
 
 # 8.5 Agent usage distribution
