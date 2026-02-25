@@ -52,73 +52,28 @@ df['month'] = df['timestamp'].dt.month
 
 df['prop_$os'] = df['prop_$os'].fillna('Unknown').str.strip()
 
-# ── Real event categories from actual data ────────────────────
 AGENT_EVENTS = [
-    'agent_tool_call_create_block_tool',
-    'agent_tool_call_run_block_tool',
-    'agent_tool_call_get_block_tool',
-    'agent_tool_call_get_canvas_summary_tool',
-    'agent_tool_call_get_variable_preview_tool',
-    'agent_tool_call_finish_ticket_tool',
-    'agent_tool_call_refactor_block_tool',
-    'agent_tool_call_delete_block_tool',
-    'agent_tool_call_create_edges_tool',
-    'agent_tool_call_get_block_image_tool',
-    'agent_new_chat',
-    'agent_message',
-    'agent_start_from_prompt',
-    'agent_worker_created',
-    'agent_block_created',
-    'agent_accept_suggestion',
-    'agent_open',
-    'agent_block_run',
-    'agent_suprise_me',
-    'agent_upload_files',
-    'agent_open_error_assist'
+    'agent_tool_call_create_block_tool','agent_tool_call_run_block_tool',
+    'agent_tool_call_get_block_tool','agent_tool_call_get_canvas_summary_tool',
+    'agent_tool_call_get_variable_preview_tool','agent_tool_call_finish_ticket_tool',
+    'agent_tool_call_refactor_block_tool','agent_tool_call_delete_block_tool',
+    'agent_tool_call_create_edges_tool','agent_tool_call_get_block_image_tool',
+    'agent_new_chat','agent_message','agent_start_from_prompt','agent_worker_created',
+    'agent_block_created','agent_accept_suggestion','agent_open','agent_block_run',
+    'agent_suprise_me','agent_upload_files','agent_open_error_assist'
 ]
-
 PRODUCTION_EVENTS = [
-    'app_publish',
-    'app_unpublish',
-    'scheduled_job_start',
-    'scheduled_job_stop',
-    'run_all_blocks',
-    'run_block',
-    'run_upto_block',
-    'run_from_block',
-    'requirements_build',
-    'hosted_apps_open'
+    'app_publish','app_unpublish','scheduled_job_start','scheduled_job_stop',
+    'run_all_blocks','run_block','run_upto_block','run_from_block',
+    'requirements_build','hosted_apps_open'
 ]
-
-COLLAB_EVENTS = [
-    'canvas_share',
-    'resource_shared',
-    'link_clicked'
-]
-
-CREDIT_EVENTS = [
-    'credits_used',
-    'addon_credits_used',
-    'promo_code_redeemed',
-    'credits_below_1',
-    'credits_below_2',
-    'credits_below_3',
-    'credits_below_4',
-    'credits_exceeded'
-]
-
-CANVAS_EVENTS = [
-    'canvas_create',
-    'canvas_open',
-    'canvas_delete',
-    'block_create',
-    'block_delete',
-    'block_rename',
-    'block_copy',
-    'block_paste',
-    'edge_create',
-    'edge_delete'
-]
+COLLAB_EVENTS  = ['canvas_share','resource_shared','link_clicked']
+CREDIT_EVENTS  = ['credits_used','addon_credits_used','promo_code_redeemed',
+                  'credits_below_1','credits_below_2','credits_below_3',
+                  'credits_below_4','credits_exceeded']
+CANVAS_EVENTS  = ['canvas_create','canvas_open','canvas_delete','block_create',
+                  'block_delete','block_rename','block_copy','block_paste',
+                  'edge_create','edge_delete']
 
 df['is_agent_event']      = df['event'].isin(AGENT_EVENTS).astype(int)
 df['is_production_event'] = df['event'].isin(PRODUCTION_EVENTS).astype(int)
@@ -142,17 +97,17 @@ fig = px.bar(top_events, x='count', y='event', orientation='h',
 fig.update_layout(yaxis={'categoryorder':'total ascending'}, height=700)
 fig.show()
 
-# 4.2 Agent vs Non-Agent events breakdown
+# 4.2 Event category breakdown
 agent_summary = pd.DataFrame({
     'Category': ['Agent Events','Production Events','Canvas Events','Collab Events','Credit Events','Other'],
     'Count': [
-        df['is_agent_event'].sum(),
-        df['is_production_event'].sum(),
-        df['is_canvas_event'].sum(),
-        df['is_collab_event'].sum(),
-        df['is_credit_event'].sum(),
-        len(df) - df[['is_agent_event','is_production_event',
-                       'is_canvas_event','is_collab_event','is_credit_event']].any(axis=1).sum()
+        int(df['is_agent_event'].sum()),
+        int(df['is_production_event'].sum()),
+        int(df['is_canvas_event'].sum()),
+        int(df['is_collab_event'].sum()),
+        int(df['is_credit_event'].sum()),
+        int(len(df) - df[['is_agent_event','is_production_event',
+                           'is_canvas_event','is_collab_event','is_credit_event']].any(axis=1).sum())
     ]
 })
 fig = px.pie(agent_summary, values='Count', names='Category',
@@ -213,22 +168,20 @@ user_df = df.groupby('person_id').agg(
     os_platform          = ('prop_$os',           lambda x: x.mode()[0]),
 ).reset_index()
 
-# Derived features
 user_df['tenure_days']        = (user_df['last_seen'] - user_df['first_seen']).dt.days
-user_df['events_per_day']     = user_df['total_events']        / (user_df['active_days'] + 1)
-user_df['agent_ratio']        = user_df['agent_events']        / (user_df['total_events'] + 1)
-user_df['production_ratio']   = user_df['production_events']   / (user_df['total_events'] + 1)
-user_df['collab_ratio']       = user_df['collab_events']       / (user_df['total_events'] + 1)
-user_df['credit_ratio']       = user_df['credit_events']       / (user_df['total_events'] + 1)
-user_df['canvas_ratio']       = user_df['canvas_events']       / (user_df['total_events'] + 1)
-user_df['event_diversity']    = user_df['unique_event_types']  / user_df['unique_event_types'].max()
-user_df['weekly_cadence']     = user_df['active_days']         / (user_df['active_weeks'] + 1)
+user_df['events_per_day']     = user_df['total_events']       / (user_df['active_days'] + 1)
+user_df['agent_ratio']        = user_df['agent_events']       / (user_df['total_events'] + 1)
+user_df['production_ratio']   = user_df['production_events']  / (user_df['total_events'] + 1)
+user_df['collab_ratio']       = user_df['collab_events']      / (user_df['total_events'] + 1)
+user_df['credit_ratio']       = user_df['credit_events']      / (user_df['total_events'] + 1)
+user_df['canvas_ratio']       = user_df['canvas_events']      / (user_df['total_events'] + 1)
+user_df['event_diversity']    = user_df['unique_event_types'] / user_df['unique_event_types'].max()
+user_df['weekly_cadence']     = user_df['active_days']        / (user_df['active_weeks'] + 1)
 user_df['ever_published_app'] = (df[df['event']=='app_publish'].groupby('person_id').size().reindex(user_df['person_id']).fillna(0).values > 0).astype(int)
 user_df['ever_scheduled']     = (df[df['event']=='scheduled_job_start'].groupby('person_id').size().reindex(user_df['person_id']).fillna(0).values > 0).astype(int)
 user_df['ever_shared']        = (df[df['event']=='canvas_share'].groupby('person_id').size().reindex(user_df['person_id']).fillna(0).values > 0).astype(int)
 user_df['used_addon_credits'] = (df[df['event']=='addon_credits_used'].groupby('person_id').size().reindex(user_df['person_id']).fillna(0).values > 0).astype(int)
 
-# Pivot top 20 events per user
 top_event_list = df['event'].value_counts().head(20).index.tolist()
 pivot = df[df['event'].isin(top_event_list)].groupby(
     ['person_id','event']
@@ -244,27 +197,26 @@ print(f'✅ User feature matrix: {user_df.shape}')
 user_df.head()
 
 # ─────────────────────────────────────────────────────────────
-# 6. FIRST 7-DAY COHORT ANALYSIS
+# 6. FIRST 7-DAY COHORT
 # ─────────────────────────────────────────────────────────────
 df_w_first = df.merge(user_df[['person_id','first_seen']], on='person_id', how='left')
 df_w_first['days_since_first'] = (df_w_first['timestamp'] - df_w_first['first_seen']).dt.days
 first_week = df_w_first[df_w_first['days_since_first'] <= 7]
 
 first_week_agg = first_week.groupby('person_id').agg(
-    fw_total_events     = ('uuid',               'count'),
-    fw_agent_events     = ('is_agent_event',     'sum'),
-    fw_production_events= ('is_production_event','sum'),
-    fw_collab_events    = ('is_collab_event',    'sum'),
-    fw_credit_events    = ('is_credit_event',    'sum'),
-    fw_canvas_events    = ('is_canvas_event',    'sum'),
-    fw_unique_events    = ('event',              'nunique'),
-    fw_active_days      = ('date',               'nunique'),
+    fw_total_events      = ('uuid',               'count'),
+    fw_agent_events      = ('is_agent_event',     'sum'),
+    fw_production_events = ('is_production_event','sum'),
+    fw_collab_events     = ('is_collab_event',    'sum'),
+    fw_credit_events     = ('is_credit_event',    'sum'),
+    fw_canvas_events     = ('is_canvas_event',    'sum'),
+    fw_unique_events     = ('event',              'nunique'),
+    fw_active_days       = ('date',               'nunique'),
 ).reset_index()
 
 user_df = user_df.merge(first_week_agg, on='person_id', how='left')
 fw_cols = [c for c in user_df.columns if c.startswith('fw_')]
 user_df[fw_cols] = user_df[fw_cols].fillna(0)
-
 print('✅ First-week features added:', fw_cols)
 
 # ─────────────────────────────────────────────────────────────
@@ -272,25 +224,18 @@ print('✅ First-week features added:', fw_cols)
 # ─────────────────────────────────────────────────────────────
 scaler = MinMaxScaler()
 
-# Retention Score (40%) — how long and consistently they stay
 ret_feats = ['tenure_days','active_days','active_weeks','events_per_day','weekly_cadence']
 user_df['retention_score'] = scaler.fit_transform(
-    user_df[ret_feats].fillna(0)
-).mean(axis=1) * 100
+    user_df[ret_feats].fillna(0)).mean(axis=1) * 100
 
-# Depth Score (35%) — how deep they go into the platform
 dep_feats = ['agent_ratio','production_ratio','collab_ratio','event_diversity',
              'ever_published_app','ever_scheduled','ever_shared']
 user_df['depth_score'] = scaler.fit_transform(
-    user_df[dep_feats].fillna(0)
-).mean(axis=1) * 100
+    user_df[dep_feats].fillna(0)).mean(axis=1) * 100
 
-# Volume Score (25%) — raw usage
 user_df['volume_score'] = scaler.fit_transform(
-    user_df[['total_events','unique_event_types','credit_events']].fillna(0)
-).mean(axis=1) * 100
+    user_df[['total_events','unique_event_types','credit_events']].fillna(0)).mean(axis=1) * 100
 
-# Composite
 user_df['success_score'] = (
     0.40 * user_df['retention_score'] +
     0.35 * user_df['depth_score']     +
@@ -314,7 +259,7 @@ fig.show()
 # 8. BEHAVIORAL PATTERNS
 # ─────────────────────────────────────────────────────────────
 
-# 8.1 Successful vs Unsuccessful comparison
+# 8.1 Successful vs Unsuccessful
 comp_cols = ['total_events','active_days','tenure_days','agent_events',
              'production_events','collab_events','ever_published_app',
              'ever_scheduled','used_addon_credits']
@@ -329,7 +274,7 @@ fig.update_layout(barmode='group',
     xaxis_tickangle=-30)
 fig.show()
 
-# 8.2 First week behavior comparison
+# 8.2 First week behavior
 fw_comp_cols = ['fw_total_events','fw_agent_events','fw_production_events',
                 'fw_canvas_events','fw_unique_events','fw_active_days']
 fw_comp = user_df.groupby('is_successful')[fw_comp_cols].mean().T.reset_index()
@@ -343,28 +288,26 @@ fig.update_layout(barmode='group',
     xaxis_tickangle=-30)
 fig.show()
 
-# 8.3 Retention vs Depth scatter
-fig = px.scatter(
-    user_df.sample(min(3000, len(user_df))),
-    x='retention_score', y='depth_score',
-    color='is_successful', size='total_events', opacity=0.6,
+# 8.3 Retention vs Depth scatter (fixed — no color string issue)
+succ0 = user_df[user_df['is_successful'] == 0].sample(min(1500, (user_df['is_successful']==0).sum()))
+succ1 = user_df[user_df['is_successful'] == 1].sample(min(1500, (user_df['is_successful']==1).sum()))
+fig = go.Figure()
+fig.add_trace(go.Scatter(
+    x=succ0['retention_score'], y=succ0['depth_score'], mode='markers',
+    name='Unsuccessful',
+    marker=dict(color='#EF553B', size=succ0['total_events'].clip(1,500)/50, opacity=0.5)))
+fig.add_trace(go.Scatter(
+    x=succ1['retention_score'], y=succ1['depth_score'], mode='markers',
+    name='Successful',
+    marker=dict(color='#00CC96', size=succ1['total_events'].clip(1,500)/50, opacity=0.5)))
+fig.update_layout(
     title='🔵 Retention vs Depth — Where Do Successful Users Sit?',
-    color_continuous_scale='RdYlGn')
+    xaxis_title='retention_score', yaxis_title='depth_score')
 fig.show()
 
-# 8.4 App publish vs success (fixed - no color_discrete_map)
+# 8.4 App publish vs success (fixed)
 pub0 = user_df[user_df['ever_published_app'] == 0]['is_successful'].value_counts()
 pub1 = user_df[user_df['ever_published_app'] == 1]['is_successful'].value_counts()
-
-pub_df = pd.DataFrame({
-    'Group'  : ['Never Published','Never Published','Published App','Published App'],
-    'Outcome': ['Unsuccessful','Successful','Unsuccessful','Successful'],
-    'Count'  : [
-        int(pub0.get(0, 0)), int(pub0.get(1, 0)),
-        int(pub1.get(0, 0)), int(pub1.get(1, 0))
-    ]
-})
-
 fig = go.Figure(data=[
     go.Bar(name='Unsuccessful',
            x=['Never Published','Published App'],
@@ -379,13 +322,17 @@ fig.update_layout(barmode='group',
     title='🚀 App Publishing = Success? The Numbers Say Yes')
 fig.show()
 
-# 8.5 Agent usage distribution
-fig = px.histogram(user_df, x='agent_events', nbins=50,
-    color='is_successful',
+# 8.5 Agent usage distribution (fixed)
+unsuccessful_agents = user_df[user_df['is_successful'] == 0]['agent_events'].clip(0, 200)
+successful_agents   = user_df[user_df['is_successful'] == 1]['agent_events'].clip(0, 200)
+fig = go.Figure()
+fig.add_trace(go.Histogram(x=unsuccessful_agents, name='Unsuccessful',
+    marker_color='#EF553B', opacity=0.7, nbinsx=50))
+fig.add_trace(go.Histogram(x=successful_agents, name='Successful',
+    marker_color='#00CC96', opacity=0.7, nbinsx=50))
+fig.update_layout(barmode='overlay',
     title='🤖 Agent Usage Distribution — Successful vs Unsuccessful',
-    color_discrete_map={0:'#EF553B', 1:'#00CC96'},
-    barmode='overlay', opacity=0.7)
-fig.update_layout(xaxis_range=[0, 200])
+    xaxis_title='Agent Events', yaxis_title='Number of Users')
 fig.show()
 
 # ─────────────────────────────────────────────────────────────
@@ -398,7 +345,6 @@ cluster_feats = ['total_events','active_days','tenure_days',
 X_cl        = user_df[cluster_feats].fillna(0)
 X_cl_scaled = StandardScaler().fit_transform(X_cl)
 
-# Elbow
 inertias = [KMeans(n_clusters=k, random_state=42, n_init=10).fit(X_cl_scaled).inertia_
             for k in range(2,9)]
 fig = px.line(x=list(range(2,9)), y=inertias, markers=True,
@@ -406,7 +352,6 @@ fig = px.line(x=list(range(2,9)), y=inertias, markers=True,
     labels={'x':'Number of Clusters (k)','y':'Inertia'})
 fig.show()
 
-# Apply k=4
 km = KMeans(n_clusters=4, random_state=42, n_init=10)
 user_df['cluster'] = km.fit_predict(X_cl_scaled)
 
@@ -414,27 +359,38 @@ pca    = PCA(n_components=2)
 coords = pca.fit_transform(X_cl_scaled)
 user_df['pca_x'], user_df['pca_y'] = coords[:,0], coords[:,1]
 
-# Profile clusters to assign names
 cluster_profile = user_df.groupby('cluster')[cluster_feats + ['success_score']].mean().round(2)
 print('\n=== CLUSTER PROFILES ===')
 print(cluster_profile)
 
-# Assign segment names based on profiles (adjust after seeing output)
+# Labels based on your actual cluster output
 segment_labels = {
-    0: 'Power Users',
-    1: 'Casual Explorers',
+    0: 'Casual Explorers',
+    1: 'Rising Stars',
     2: 'One-time Visitors',
-    3: 'Rising Stars'
+    3: 'Power Users'
 }
 user_df['segment'] = user_df['cluster'].map(segment_labels)
 
-fig = px.scatter(user_df.sample(min(3000,len(user_df))),
-    x='pca_x', y='pca_y', color='segment',
-    title='🗺️ 4 Types of Zerve Users — Who Are They?',
-    opacity=0.7, size='total_events')
+# Scatter (fixed — go.Figure, no px.scatter with color=string)
+colors_map = {
+    'Power Users'      : '#636EFA',
+    'Casual Explorers' : '#FFA15A',
+    'One-time Visitors': '#EF553B',
+    'Rising Stars'     : '#00CC96'
+}
+sample = user_df.sample(min(3000, len(user_df)))
+fig = go.Figure()
+for seg, col in colors_map.items():
+    mask = sample['segment'] == seg
+    fig.add_trace(go.Scatter(
+        x=sample[mask]['pca_x'], y=sample[mask]['pca_y'],
+        mode='markers', name=seg,
+        marker=dict(color=col, size=5, opacity=0.7)))
+fig.update_layout(title='🗺️ 4 Types of Zerve Users — Who Are They?')
 fig.show()
 
-# Segment size
+# Segment size pie
 seg_size = user_df['segment'].value_counts().reset_index()
 seg_size.columns = ['segment','count']
 fig = px.pie(seg_size, values='count', names='segment',
@@ -452,23 +408,25 @@ for (seg, row), col in zip(seg_means.iterrows(), ['blue','red','green','orange']
     cats = radar_feats + [radar_feats[0]]
     fig.add_trace(go.Scatterpolar(
         r=vals, theta=cats, fill='toself', name=seg, line_color=col))
-fig.update_layout(
-    polar=dict(radialaxis=dict(visible=True)),
+fig.update_layout(polar=dict(radialaxis=dict(visible=True)),
     title='🕸️ User Segment Radar — Each Persona At a Glance')
 fig.show()
 
 # ─────────────────────────────────────────────────────────────
-# 10. USER SUCCESS FUNNEL
+# 10. FUNNEL
 # ─────────────────────────────────────────────────────────────
+evt_canvas_open  = user_df['evt_canvas_open']  if 'evt_canvas_open'  in user_df.columns else pd.Series(0, index=user_df.index)
+evt_block_create = user_df['evt_block_create'] if 'evt_block_create' in user_df.columns else pd.Series(0, index=user_df.index)
+
 funnel_stages = [
-    ('Signed Up',                  len(user_df)),
-    ('Opened a Canvas',            int((user_df.get('evt_canvas_open', pd.Series(0)) > 0).sum())),
-    ('Created a Block',            int((user_df.get('evt_block_create', pd.Series(0)) > 0).sum())),
-    ('Used Agent',                 int((user_df['agent_events'] > 0).sum())),
-    ('Ran Code',                   int((user_df['production_events'] > 0).sum())),
-    ('Active 7+ Days',             int((user_df['tenure_days'] >= 7).sum())),
-    ('Published App / Scheduled',  int((user_df['ever_published_app'] | user_df['ever_scheduled']).sum())),
-    ('Successful (Top 30%)',       int(user_df['is_successful'].sum()))
+    ('Signed Up',                 len(user_df)),
+    ('Opened a Canvas',           int((evt_canvas_open  > 0).sum())),
+    ('Created a Block',           int((evt_block_create > 0).sum())),
+    ('Used Agent',                int((user_df['agent_events'] > 0).sum())),
+    ('Ran Code',                  int((user_df['production_events'] > 0).sum())),
+    ('Active 7+ Days',            int((user_df['tenure_days'] >= 7).sum())),
+    ('Published App / Scheduled', int((user_df['ever_published_app'] | user_df['ever_scheduled']).sum())),
+    ('Successful (Top 30%)',      int(user_df['is_successful'].sum()))
 ]
 f_df = pd.DataFrame(funnel_stages, columns=['Stage','Users'])
 fig  = go.Figure(go.Funnel(
@@ -481,7 +439,7 @@ fig.update_layout(title='🔽 The User Journey — Where Do People Drop Off?', h
 fig.show()
 
 # ─────────────────────────────────────────────────────────────
-# 11. MACHINE LEARNING — PREDICT SUCCESS
+# 11. MACHINE LEARNING
 # ─────────────────────────────────────────────────────────────
 feature_cols = (
     ['total_events','unique_event_types','active_days','active_weeks',
@@ -565,7 +523,7 @@ print(classification_report(y_test, y_pred_best,
       target_names=['Not Successful','Successful']))
 
 # ─────────────────────────────────────────────────────────────
-# 12. SHAP — WHY DOES THE MODEL PREDICT SUCCESS?
+# 12. SHAP
 # ─────────────────────────────────────────────────────────────
 try:
     import shap
@@ -594,7 +552,6 @@ insights = [
     ('🟡 LOW',    'One-time visitors make up a large chunk of the user base',
                   'Reactivation campaign: show them what they missed in a single email'),
 ]
-
 print('\n' + '='*65)
 print('💡 KEY INSIGHTS & RECOMMENDATIONS')
 print('='*65)

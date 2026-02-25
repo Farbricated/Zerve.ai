@@ -6,31 +6,14 @@ blocks:
 - auto_size: false
   canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
   compute_settings: null
-  description: 'Comprehensive ML retention analysis: cleans 409K user events, engineers
-    40+ behavioral features (agent usage, app publishing, engagement depth), creates
-    composite success score, segments users via K-Means, trains 3 ML classifiers to
-    predict success, generates 12+ interactive visualizations including funnel analysis
-    and feature importance charts'
+  description: 'Comprehensive user retention analysis: cleans 409K events, engineers
+    40+ behavioral features, creates composite success score, segments users into
+    4 personas via clustering, trains 3 ML classifiers to predict success, and generates
+    12+ visualizations revealing agent adoption as top success predictor'
   height: 1000
   id: 2bb3b5d1-dff5-4f56-8a31-fe4d6d68dd38
   layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
   name: data_science_retention_analysis
-  parent_id: null
-  properties: {}
-  status: 4
-  type: 1
-  variables: null
-  width: 1600
-  x: 0
-  y: 1000
-- auto_size: false
-  canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
-  compute_settings: null
-  description: Displays the distribution of event types in the user retention dataset
-  height: 1000
-  id: c416eff4-fe99-40b6-9d17-58e33b79f400
-  layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
-  name: event_value_counts
   parent_id: null
   properties: {}
   status: 3
@@ -38,7 +21,7 @@ blocks:
   variables: null
   width: 1600
   x: 0
-  y: 500
+  y: 1000
 - auto_size: false
   canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
   compute_settings:
@@ -57,14 +40,32 @@ blocks:
   width: 1600
   x: 0
   y: 0
+- auto_size: false
+  canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
+  compute_settings: null
+  description: 'Analyzes user engagement patterns & predicts success through cross-validated
+    ML models (95.9% AUC day-3 warning, 4 personas) | Charts: platform health, retention
+    heatmap, feature importance, activation milestones'
+  height: 1000
+  id: f9e3f346-4996-4e0d-8d8b-6916fcb37a73
+  layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
+  name: advanced_analysis_top_3_differentiators
+  parent_id: null
+  properties: {}
+  status: 4
+  type: 1
+  variables: null
+  width: 1600
+  x: 0
+  y: 1500
 edges:
 - canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
-  id: 555f5ab5-bcd4-4236-89a1-b6b94e756644
-  layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
-  source: c416eff4-fe99-40b6-9d17-58e33b79f400
-  target: 2bb3b5d1-dff5-4f56-8a31-fe4d6d68dd38
-- canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
-  id: b18de6c5-09a9-4470-892f-8853a91c8740
+  id: 0de85633-1e38-47a5-879d-b29bd1f38d8e
   layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
   source: e7c6b02b-8c17-43a0-a594-bc6edcdcccf9
-  target: c416eff4-fe99-40b6-9d17-58e33b79f400
+  target: 2bb3b5d1-dff5-4f56-8a31-fe4d6d68dd38
+- canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
+  id: 4503e63a-c497-43b2-8802-e9b5fcbb6ffe
+  layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
+  source: 2bb3b5d1-dff5-4f56-8a31-fe4d6d68dd38
+  target: f9e3f346-4996-4e0d-8d8b-6916fcb37a73
