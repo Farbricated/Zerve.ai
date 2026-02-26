@@ -43,9 +43,10 @@ blocks:
 - auto_size: false
   canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
   compute_settings: null
-  description: 'Analyzes user engagement patterns & predicts success through cross-validated
-    ML models (95.9% AUC day-3 warning, 4 personas) | Charts: platform health, retention
-    heatmap, feature importance, activation milestones'
+  description: 9-beat narrative analysis of Zerve platform user success metrics across
+    409K events and 4,774 users, combining cohort retention heatmaps, KMeans segmentation,
+    5-fold cross-validated Random Forest models, and day-3 churn prediction to identify
+    activation formula
   height: 1000
   id: f9e3f346-4996-4e0d-8d8b-6916fcb37a73
   layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
