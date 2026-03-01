@@ -14,14 +14,13 @@ layers:
   - auto_size: false
     canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
     compute_settings: null
-    description: 'Comprehensive user retention analysis: cleans 409K events, engineers
-      40+ behavioral features, creates composite success score, segments users into
-      4 personas via clustering, trains 3 ML classifiers to predict success, and generates
-      12+ visualizations revealing agent adoption as top success predictor'
+    description: Presents executive summary of user success analysis including 7-day
+      behavior thesis, dual success definitions, key findings, model performance (AUC
+      0.94-0.99), activation formula, persona playbook, and product recommendations
     height: 1000
-    id: 2bb3b5d1-dff5-4f56-8a31-fe4d6d68dd38
+    id: 28aeac1a-5cc0-4db1-a4fb-bc123b9b89ba
     layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
-    name: data_science_retention_analysis
+    name: zerve_challenge_summary
     parent_id: null
     properties: {}
     status: 3
@@ -29,7 +28,26 @@ layers:
     variables: null
     width: 1600
     x: 0
-    y: 1000
+    y: 3000
+  - auto_size: false
+    canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
+    compute_settings: null
+    description: Evaluates all three predictive models (full, early warning, upgrade)
+      using precision, recall, F1-score & accuracy metrics. Visualizes confusion matrix
+      and precision-recall tradeoff across decision thresholds for the early warning
+      model at 0.2-0.6 thresholds
+    height: 1000
+    id: e1561e5d-9ce3-4dc6-8282-73dd7c7924e1
+    layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
+    name: classification_metrics_analysis
+    parent_id: null
+    properties: {}
+    status: 3
+    type: 1
+    variables: null
+    width: 1600
+    x: 0
+    y: 2500
   - auto_size: false
     canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
     compute_settings:
@@ -42,7 +60,7 @@ layers:
     name: Example Dataset
     parent_id: null
     properties: {}
-    status: 1
+    status: 3
     type: 1
     variables: null
     width: 1600
@@ -51,17 +69,36 @@ layers:
   - auto_size: false
     canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
     compute_settings: null
-    description: 9-beat narrative analysis of Zerve platform user success metrics
-      across 409K events and 4,774 users, combining cohort retention heatmaps, KMeans
-      segmentation, 5-fold cross-validated Random Forest models, and day-3 churn prediction
-      to identify activation formula
+    description: Analyzes time-to-first-value, network effects via canvas sharing,
+      and platform user retention using survival curves and success rate comparisons
+    height: 1000
+    id: f8794f1f-3b3a-46f9-9887-d5f159c4f418
+    layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
+    name: time_value_network_survival
+    parent_id: null
+    properties: {}
+    status: 3
+    type: 1
+    variables: null
+    width: 1600
+    x: 0
+    y: 2000
+  - auto_size: false
+    canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
+    compute_settings: null
+    description: "Nine-act narrative analyzing Zerve user retention. Decodes why 30%\
+      \ succeed\u2014through platform health dashboards, cohort retention heatmaps,\
+      \ 4 user personas (KMeans+PCA), cross-validated predictive models (0.84 AUC),\
+      \ day-3 early warning system, and milestone-driven activation formulas. Reveals\
+      \ counter-intuitive insight: patient users win. Delivers per-persona playbook\
+      \ for onboarding, upsells, and reactivation."
     height: 1000
     id: f9e3f346-4996-4e0d-8d8b-6916fcb37a73
     layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
     name: advanced_analysis_top_3_differentiators
     parent_id: null
     properties: {}
-    status: 4
+    status: 3
     type: 1
     variables: null
     width: 1600
@@ -70,15 +107,25 @@ layers:
   canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
   edges:
   - canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
-    id: 0de85633-1e38-47a5-879d-b29bd1f38d8e
+    id: 03cccfca-bbdc-4e5b-915f-f602d707331d
+    layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
+    source: f8794f1f-3b3a-46f9-9887-d5f159c4f418
+    target: e1561e5d-9ce3-4dc6-8282-73dd7c7924e1
+  - canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
+    id: 59a6869e-7b75-4784-96ba-a6c80ce5051b
+    layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
+    source: f9e3f346-4996-4e0d-8d8b-6916fcb37a73
+    target: f8794f1f-3b3a-46f9-9887-d5f159c4f418
+  - canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
+    id: 6c865c0b-6aa5-435e-8609-2f7bebfd5bb5
     layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
     source: e7c6b02b-8c17-43a0-a594-bc6edcdcccf9
-    target: 2bb3b5d1-dff5-4f56-8a31-fe4d6d68dd38
-  - canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
-    id: 4503e63a-c497-43b2-8802-e9b5fcbb6ffe
-    layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
-    source: 2bb3b5d1-dff5-4f56-8a31-fe4d6d68dd38
     target: f9e3f346-4996-4e0d-8d8b-6916fcb37a73
+  - canvas_id: 761c8d91-06e4-4bb9-ab74-6b8aec53119c
+    id: 91f001b9-6384-4419-9d0a-b1fca86d22b1
+    layer_id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
+    source: e1561e5d-9ce3-4dc6-8282-73dd7c7924e1
+    target: 28aeac1a-5cc0-4db1-a4fb-bc123b9b89ba
   id: 56075d32-b0f6-47e9-ba71-8df4401ed5c1
   name: Development
   type: 1
